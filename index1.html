@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관리업체 입찰참가자격 제한 주민 동의서</title>
+    <style>
+        * { box-sizing: border-box; font-family: 'Noto Sans KR', sans-serif; }
+        body { background-color: #f0f2f5; margin: 0; padding: 12px; color: #2d3748; }
+        .container { max-width: 620px; margin: 0 auto; background: #fff; padding: 18px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        
+        /* 상단 헤더 */
+        .header { background: #1e293b; color: white; padding: 12px; border-radius: 6px; text-align: center; margin-bottom: 12px; }
+        h1 { font-size: 17px; margin: 0; font-weight: 700; letter-spacing: -0.5px; }
+        
+        .law-notice { background-color: #f1f5f9; border-left: 3px solid #475569; padding: 8px 10px; font-size: 11.5px; color: #334155; margin-bottom: 12px; line-height: 1.4; }
+        
+        /* I. 강조 문구 */
+        .highlight-banner { background-color: #fff1f2; border: 1.5px solid #e11d48; color: #9f1239; padding: 10px 12px; border-radius: 6px; font-size: 12.5px; font-weight: bold; text-align: center; margin-bottom: 12px; line-height: 1.5; box-shadow: 0 2px 4px rgba(225,29,72,0.1); }
+
+        /* 제출 가능 자격 안내 */
+        .eligibility-box { background-color: #ecfdf5; border: 1px solid #10b981; color: #065f46; padding: 9px 12px; border-radius: 6px; font-size: 11.5px; margin-bottom: 12px; line-height: 1.4; }
+
+        /* II. 관리주체 주요 문제점 */
+        .issues-box { background-color: #fef2f2; border: 1px solid #fecaca; padding: 10px 12px; border-radius: 6px; font-size: 11.5px; color: #991b1b; margin-bottom: 12px; line-height: 1.5; }
+        .issues-box ul { padding-left: 18px; margin: 5px 0; }
+        .issues-box li { margin-bottom: 4px; }
+        .issues-box li.target-point { color: #b91c1c; font-weight: bold; background: #fee2e2; padding: 2px 4px; border-radius: 3px; }
+        
+        /* 폼 요소 레이아웃 */
+        .form-group { margin-bottom: 10px; }
+        label { display: block; font-weight: bold; font-size: 12.5px; margin-bottom: 3px; color: #475569; }
+        input[type="text"], input[type="tel"], input[type="password"] { width: 100%; padding: 7px 10px; border: 1px solid #cbd5e1; border-radius: 5px; font-size: 13px; }
+        .row { display: flex; gap: 8px; }
+        .row > div { flex: 1; }
+        
+        .canvas-container { border: 1px solid #cbd5e1; border-radius: 5px; background: #fafafa; text-align: center; position: relative; }
+        canvas { width: 100%; height: 110px; touch-action: none; cursor: crosshair; }
+        .btn-clear { position: absolute; right: 6px; top: 6px; background: #e2e8f0; border: none; padding: 3px 6px; font-size: 10.5px; border-radius: 3px; cursor: pointer; }
+
+        .checkbox-group { margin: 12px 0 10px 0; font-size: 11.5px; color: #334155; background: #f8fafc; padding: 10px; border-radius: 5px; border: 1px solid #e2e8f0; line-height: 1.5; }
+        .btn-submit { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; font-size: 15px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: background 0.2s; }
+        .btn-submit:hover { background: #1d4ed8; }
+
+        /* 단체 안내 부기 */
+        .group-footer { text-align: center; margin-top: 15px; padding: 8px; background: #f8fafc; border-radius: 6px; font-size: 11.5px; color: #475569; border: 1px dashed #cbd5e1; }
+        
+        /* 관리자 전용 영역 */
+        .admin-login-section { margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 12px; text-align: center; }
+        .admin-content { display: none; margin-top: 10px; text-align: left; background: #f8fafc; padding: 12px; border-radius: 6px; border: 1px solid #cbd5e1; }
+        .progress-box { background: #fff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 10px; margin-bottom: 12px; text-align: center; }
+        .progress-title { font-size: 12px; font-weight: bold; color: #334155; margin-bottom: 5px; display: flex; justify-content: space-between; }
+        .progress-bar-bg { width: 100%; height: 12px; background: #e2e8f0; border-radius: 6px; overflow: hidden; margin-bottom: 4px; }
+        .progress-bar-fill { height: 100%; width: 0%; background: #2563eb; transition: width 0.4s ease; }
+        .target-text { font-size: 11px; color: #64748b; text-align: right; }
+
+        .table-wrapper { overflow-x: auto; max-height: 220px; border: 1px solid #e2e8f0; border-radius: 5px; margin-bottom: 8px; background: #fff; }
+        table { width: 100%; border-collapse: collapse; font-size: 11px; text-align: left; }
+        th, td { padding: 6px 8px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+        th { background: #f1f5f9; position: sticky; top: 0; }
+        
+        .btn-action-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+        .btn-excel { flex: 1; background: #16a34a; color: white; border: none; padding: 8px; font-size: 11.5px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .btn-print { flex: 1; background: #0284c7; color: white; border: none; padding: 8px; font-size: 11.5px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .btn-pw-change { background: #d97706; color: white; border: none; padding: 8px; font-size: 11.5px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .btn-reset-data { background: #dc2626; color: white; border: none; padding: 8px; font-size: 11.5px; font-weight: bold; border-radius: 4px; cursor: pointer; }
+        .btn-close-view { background: #475569; color: white; border: none; padding: 8px 12px; font-size: 11.5px; border-radius: 4px; cursor: pointer; }
+        
+        .sig-img { width: 80px; height: 30px; object-fit: contain; border: 1px solid #e2e8f0; background: #fff; }
+
+        @media print {
+            body { background: #fff; padding: 0; }
+            .container > *:not(.admin-content), .admin-login-section, .btn-action-row { display: none !important; }
+            .admin-content { display: block !important; margin: 0; border: none !important; padding: 0 !important; }
+            .table-wrapper { max-height: none !important; border: none !important; }
+            table { font-size: 12px !important; width: 100% !important; }
+            th { background: #eee !important; -webkit-print-color-adjust: exact; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>한빛아파트 관리업체 입찰참가자격 제한 동의서</h1>
+    </div>
+    
+    <div class="law-notice">
+        <b>[관련 법령] 공동주택관리법 시행령 제25조 및 주택관리업자 선정 지침</b><br>
+        전체 입주자등 과반수 동의를 얻어 입주자대표회의 제출 시, 현 관리주체의 차기 경쟁입찰 참가를 배제할 수 있습니다.
+    </div>
+
+    <!-- I. 강조 문구 -->
+    <div class="highlight-banner">
+        "관리주체의 왜곡된 정보제공으로 인하여 주민들은 다투고 관리주체는 이익을 향유하고 있습니다"
+    </div>
+
+    <!-- 제출 가능 자격 안내 -->
+    <div class="eligibility-box">
+        <b>📌 동의서 제출(참여) 가능 대상 안내</b><br>
+        본 동의서는 <b>소유자, 소유자의 배우자·가족, 임차인(세입자) 및 임차인 가족</b> 등 해당 세대에 거주하거나 권리를 가진 분 누구나 참여하여 제출하실 수 있습니다. (※ 세대당 1회 제출)
+    </div>
+
+    <!-- II. 관리주체 주요 문제점 -->
+    <div class="issues-box">
+        <strong>■ 관리주체(관리사무소) 주요 문제점</strong>
+        <ul>
+            <li class="target-point">1. 회사는 2011년 수의계약 체결 후 현재까지 16년동안 우리 아파트를 독점 운영</li>
+            <li class="target-point">2. 3,144세대, 100억 예산 운영하기에는 경영능력 미흡한 영세업자임</li>
+            <li>3. 관리사무소 운용, 승강기유지관리, 청소용역 등 주요 용역을 수의계약으로 체결하여 주체회사·가족회사가 독점</li>
+            <li>4. 관리사무소 직원의 검침수당 비자금 통장 운영 및 현금 유용</li>
+            <li>5. 재활용품 매각을 수의계약으로 추진하여 주민 수익 훼손</li>
+            <li>6. 2024년 관리주체 선정 과정에서 입대의와 비상식적인 입찰담합 행위</li>
+            <li>7. 승강기유지관리용역 불법적인 담합 추진 및 주민 관리비 부담액 증가</li>
+            <li>8. 주차차단기 설치 관련 편향적인 주민투표 관리</li>
+            <li>9. 불법적인 회계처리 수행</li>
+            <li>10. 주민보다 특정 동대표 등에 편향된 아파트 관리 (주차차단기 설치, 복지시설 운영 등)</li>
+            <li>11. 주민들이 선임한 입대의 회장의 인격을 말살시킨 비정한 회사임</li>
+            <li>12. 자신들의 잘못을 은폐하기 위하여 수단 방법을 가리지 않는 비상식적 회사임</li>
+        </ul>
+        <div style="font-size: 11px; color: #b91c1c; margin-top: 4px; font-weight: bold;">상기 사유로 현 관리업체의 차기 입찰 참가를 원천 배제하고자 동의를 수집합니다.</div>
+    </div>
+
+    <!-- 주민 동의 입력 폼 -->
+    <form id="consentForm">
+        <div class="row">
+            <div class="form-group">
+                <label for="dong">동 (Dong)</label>
+                <input type="text" id="dong" placeholder="예: 101" required>
+            </div>
+            <div class="form-group">
+                <label for="ho">호 (Ho)</label>
+                <input type="text" id="ho" placeholder="예: 502" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label for="name">성명</label>
+                <input type="text" id="name" placeholder="홍길동" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">연락처</label>
+                <input type="tel" id="phone" placeholder="010-0000-0000" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>전자 서명 (마우스 또는 손가락으로 서명)</label>
+            <div class="canvas-container">
+                <button type="button" class="btn-clear" onclick="clearCanvas()">지우기</button>
+                <canvas id="signatureCanvas"></canvas>
+            </div>
+        </div>
+
+        <div class="checkbox-group">
+            <label>
+                <input type="checkbox" id="agreePersonal" required> 
+                <b>[필수] 개인정보 수집·이용 및 자격 확인 동의</b><br>
+                본인은 해당 세대의 적법한 입주자등(소유자·배우자·가족·임차인 및 그 가족)으로서, 본 동의서에 기재된 내용과 전자서명을 입찰참가자격 제한 동의 집계 및 입주자대표회의·관할 기관 제출 목적으로 수집·이용하는 것에 동의합니다.
+            </label>
+        </div>
+
+        <button type="submit" class="btn-submit">입찰 제한 동의서 제출하기</button>
+    </form>
+
+    <!-- 단체 안내 부기 -->
+    <div class="group-footer">
+        <b>아름다운 아파트 가꾸기 모임</b><br>
+        (홍길동 010-1234-5678, 이도령 010-1234-5678)
+    </div>
+
+    <!-- 관리자 전용 영역 -->
+    <div class="admin-login-section" id="loginSection">
+        <span style="font-size: 11px; color: #94a3b8;">🔒 관리자 전용 영역</span>
+        <div style="display: flex; gap: 6px; margin-top: 4px; max-width: 280px; margin-left: auto; margin-right: auto;">
+            <input type="password" id="adminPassword" placeholder="관리자 비밀번호" style="padding: 4px 8px; font-size: 12px;">
+            <button type="button" onclick="verifyAdminPassword()" style="padding: 4px 10px; background: #475569; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11.5px;">로그인</button>
+        </div>
+    </div>
+
+    <div class="admin-content" id="adminContent">
+        <div class="progress-box">
+            <div class="progress-title">
+                <span>📊 관리자 전용 동의 수집 현황</span>
+                <span><b id="countDisplay">0</b> / 3,144 세대 (<b id="percentDisplay">0.0</b>%)</span>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="progressBar"></div>
+            </div>
+            <div class="target-text">과반수 목표: 1,573세대</div>
+        </div>
+
+        <div style="font-size: 11.5px; font-weight: bold; margin-bottom: 6px; color: #334155;">📋 세부 동의자 명부 (관리자 전용)</div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>동/호수</th>
+                        <th>성명</th>
+                        <th>연락처</th>
+                        <th>전자서명</th>
+                        <th>제출일시</th>
+                    </tr>
+                </thead>
+                <tbody id="consentTableBody">
+                </tbody>
+            </table>
+        </div>
+        <div class="btn-action-row">
+            <button class="btn-excel" onclick="exportToExcelFile()">📥 엑셀(CSV) 다운로드</button>
+            <button class="btn-print" onclick="window.print()">🖨️ 명부 인쇄</button>
+            <button class="btn-pw-change" onclick="changePassword()">🔑 비밀번호 변경</button>
+            <button class="btn-reset-data" onclick="resetAllData()">🗑️ 데이터 초기화</button>
+            <button class="btn-close-view" onclick="closeAdminView()">🙈 화면 닫기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const TOTAL_HOUSEHOLDS = 3144;
+    
+    function getAdminPassword() {
+        return localStorage.getItem('hanbitAdminPw') || '1234';
+    }
+
+    // 4. 앱 화면 클릭 시 또는 접속 시 음성 안내 메시지 송출 (브라우저 자동재생 제한 완벽 대응)
+    function playWelcomeSpeech() {
+        if ('speechSynthesis' in window) {
+            // 이미 재생 중인 음성이 있다면 중복 재생 방지
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance("아름다운 아파트 가꾸기 활동에 동참하여 주시기 바랍니다.");
+            utterance.lang = 'ko-KR';
+            utterance.rate = 1.0;
+            window.speechSynthesis.speak(utterance);
+        }
+    }
+
+    // 페이지 로드 시 시도
+    window.addEventListener('DOMContentLoaded', () => {
+        playWelcomeSpeech();
+    });
+
+    // 사용자가 화면을 터치하거나 클릭하는 순간 음성이 확실하게 나오도록 보장
+    window.addEventListener('click', () => {
+        playWelcomeSpeech();
+    }, { once: true }); // 최초 1회 클릭 시 실행 후 해제
+
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    function resizeCanvas() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width > 0 ? rect.width : 500;
+        canvas.height = 110;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000';
+    }
+    window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('load', resizeCanvas);
+
+    function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: (e.touches ? e.touches[0].clientX : e.clientX) - rect.left,
+            y: (e.touches ? e.touches[0].clientY : e.clientY) - rect.top
+        };
+    }
+
+    function startDrawing(e) { isDrawing = true; const pos = getPos(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); }
+    function draw(e) { if (!isDrawing) return; const pos = getPos(e); ctx.lineTo(pos.x, pos.y); ctx.stroke(); }
+    function stopDrawing() { isDrawing = false; }
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+    canvas.addEventListener('touchend', stopDrawing);
+
+    function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+
+    function updateStats() {
+        const data = JSON.parse(localStorage.getItem('hanbitConsents') || '[]');
+        const count = data.length;
+        const percent = ((count / TOTAL_HOUSEHOLDS) * 100).toFixed(1);
+        
+        document.getElementById('countDisplay').innerText = count;
+        document.getElementById('percentDisplay').innerText = percent;
+        document.getElementById('progressBar').style.width = Math.min(percent, 100) + '%';
+    }
+
+    function verifyAdminPassword() {
+        const pwInput = document.getElementById('adminPassword').value;
+        if (pwInput === getAdminPassword()) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('adminContent').style.display = 'block';
+            loadTableData();
+            updateStats();
+        } else {
+            alert('관리자 비밀번호가 올바르지 않습니다.');
+        }
+    }
+
+    function closeAdminView() {
+        document.getElementById('adminContent').style.display = 'none';
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('adminPassword').value = '';
+    }
+
+    function changePassword() {
+        const currentPw = prompt("현재 관리자 비밀번호를 입력하세요:");
+        if (currentPw !== getAdminPassword()) {
+            alert("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+        const newPw = prompt("새로운 관리자 비밀번호를 입력하세요:");
+        if (newPw && newPw.trim() !== "") {
+            localStorage.setItem('hanbitAdminPw', newPw.trim());
+            alert("관리자 비밀번호가 성공적으로 변경되었습니다.");
+        }
+    }
+
+    function resetAllData() {
+        if (confirm("정말로 모든 동의 데이터를 초기화하고 새로 시작하시겠습니까?\n(주의: 삭제된 데이터는 복구할 수 없습니다.)")) {
+            localStorage.removeItem('hanbitConsents');
+            loadTableData();
+            updateStats();
+            alert("모든 데이터가 초기화되었습니다. 새로 시작하실 수 있습니다.");
+        }
+    }
+
+    function loadTableData() {
+        const data = JSON.parse(localStorage.getItem('hanbitConsents') || '[]');
+        const tbody = document.getElementById('consentTableBody');
+        tbody.innerHTML = '';
+        data.forEach(item => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><b>${item.dong}동 ${item.ho}호</b></td>
+                <td>${item.name}</td>
+                <td>${item.phone}</td>
+                <td><img src="${item.signature}" class="sig-img" alt="서명"></td>
+                <td>${item.date}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    const form = document.getElementById('consentForm');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const dong = document.getElementById('dong').value.trim();
+        const ho = document.getElementById('ho').value.trim();
+        const name = document.getElementById('name').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+
+        if (!dong || !ho || !name || !phone) {
+            alert('모든 필수 항목을 입력해 주세요.');
+            return;
+        }
+
+        const phoneClean = phone.replace(/[^0-9]/g, '');
+        const phoneRegex = /^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/;
+        if (!phoneRegex.test(phoneClean)) {
+            alert("연락처 번호 확인 바랍니다.");
+            document.getElementById('phone').focus();
+            return;
+        }
+
+        const data = JSON.parse(localStorage.getItem('hanbitConsents') || '[]');
+        
+        const isDuplicate = data.some(item => item.dong === dong && item.ho === ho);
+        if (isDuplicate) {
+            alert(`[중복 안내]\n이미 ${dong}동 ${ho}호 동의서가 접수되어 있습니다.`);
+            return;
+        }
+
+        const newEntry = {
+            dong, ho, name, phone,
+            signature: canvas.toDataURL(),
+            date: new Date().toLocaleString('ko-KR')
+        };
+
+        data.push(newEntry);
+        localStorage.setItem('hanbitConsents', JSON.stringify(data));
+        
+        alert(`[제출 완료]\n${dong}동 ${ho}호 동의서 접수가 완료되었습니다.`);
+        
+        form.reset();
+        clearCanvas();
+        updateStats();
+        if(document.getElementById('adminContent').style.display === 'block') {
+            loadTableData();
+        }
+    });
+
+    function exportToExcelFile() {
+        const data = JSON.parse(localStorage.getItem('hanbitConsents') || '[]');
+        if (data.length === 0) {
+            alert('다운로드할 데이터가 없습니다.');
+            return;
+        }
+
+        let csvContent = "\uFEFF동호수,성명,연락처,제출일시\n";
+        data.forEach(item => {
+            csvContent += `"${item.dong}동 ${item.ho}호","${item.name}","${item.phone}","${item.date}"\n`;
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `입찰제한_주민동의서_명부.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+
+</body>
+</html>
